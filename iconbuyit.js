@@ -323,8 +323,13 @@ function ParseSableResult(sableData) {
     return featureList;
 }
 
-function main () {
+function change_layout() {
+    var prodDetails = document.getElementById('prodDetails');
+    prodDetails.parentNode.removeChild(prodDetails);
+});
 
+function main () {
+    change_layout();
     AppendIconizeStyle();
 
 
