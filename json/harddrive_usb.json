@@ -1,0 +1,29 @@
+[{
+        condition: {
+            type: "or",
+            conditions: [{
+                    field: "product_type",
+                    regex: "COMPUTER_COMPONENT"
+                }, {
+                    field: "product_type",
+                    regex: "COMPUTER_DRIVE_OR_STORAGE"
+                }
+           ]
+        },
+        valueMatchers: [{
+                field: "communication_interface",
+                regex: ".*USB.*"
+            }, {
+                field: "hardware_interface",
+                regex: ".*USB.*"
+            }, {
+                field: "bullet_point",
+                regex: ".*USB.*"
+            }, {
+                field: "connectivity_technology",
+                regex: ".*USB.*"
+            }
+        ],
+        icon: "USB"
+    }
+]
