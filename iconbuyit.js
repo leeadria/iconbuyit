@@ -6,16 +6,16 @@
 // @include      http://www.amazon.co.jp/*
 // @grant        none
 // ==/UserScript==
-
+ 
 //debugger;
-
+ 
 function CreateImageElement(src) {
     var img = document.createElement('img');
     //img.setAttribute('class', 'iconize');
     img.src = src;
     return img;
 }
-
+ 
 function CreateIconContainer(features) {
     var iconDiv = document.createElement('div');
     var featureId = 0;
@@ -40,7 +40,7 @@ function CreateIconContainer(features) {
     nodeAfter = document.getElementById('bottomRow');
     nodeAfter.parentNode.insertBefore(iconDiv, nodeAfter);
 }
-
+ 
 function AppendIconizeStyle() {
     var stl = document.createElement('style');
     stl.type = 'text/css';
@@ -49,11 +49,11 @@ function AppendIconizeStyle() {
     var head = document.getElementsByTagName('head');
     head[0].appendChild(stl);
 }
-
+ 
 function getFeatureURL(featureName) {
     return "https://github.com/floydSJTU/iconbuyit/raw/master/icons/" + featureName + "_icon.png";
 }
-
+ 
 function GetFeatureName(attr) {
     switch (attr)
     {
@@ -77,9 +77,9 @@ function GetFeatureName(attr) {
     }
     return null;
 }
-
+ 
 function FeatureNameToURL(featureName) {
-
+ 
     switch (featureName)
     {
         case "display":
@@ -101,36 +101,36 @@ function FeatureNameToURL(featureName) {
     }
     return null;
 }
-
+ 
 function ParseFeatureBullet(lable, value) {
     var featureName = GetFeatureName(lable);
-
+ 
     if (featureName != null) {
         var feature = {};
         feature.val = value;
         feature.name = FeatureNameToURL(featureName);
-
+ 
         return feature;
     } else {
         //console.log("Not country of origin: " + attr);
         return null;
     }
 }
-
+ 
 function ExtractLabelValue(elem) {
     var text = elem.innerHTML;
     var pair = text.split(/:/);
-
+ 
     if (pair[1] == null) {
         return null;
     }
-
+ 
     var label = pair[0].trim();
     var value = pair[pair.length - 1].trim();
-
+ 
     return [label, value];
 }
-
+ 
 function ParseFeatureBullets() {
     var featureList = [];
     var elemFeatureBullets = document.getElementById("feature-bullets");
@@ -146,10 +146,10 @@ function ParseFeatureBullets() {
     } else {
         console.log("feature-bullets not found");
     }
-
+ 
     return featureList;
 }
-
+ 
 function ParseProductDetail() {
     var featureList = [];
     var elemProductDetails = document.getElementById("prodDetails");
@@ -166,10 +166,10 @@ function ParseProductDetail() {
     } else {
         console.log("feature-bullets not found");
     }
-
+ 
     return featureList;
 }
-
+ 
 var SableResult = {
     total_ethernet_ports: [
         {
@@ -253,42 +253,42 @@ var SableResult = {
             }
         ],
 };
-
-
+ 
+ 
 function ParseSableResult(sableData) {
     var featureList = [];
-
+ 
     console.log(sableData);
     console.log(sableData["total_ethernet_ports"]);
-
+ 
     if (sableData["total_ethernet_ports"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("total_ethernet_ports");
         feature.value = sableData["total_ethernet_ports"][0].value;
         featureList.push(feature);
     }
-
+ 
     if (sableData["total_hdmi_ports"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("total_hdmi_ports");
         feature.value = sableData["total_hdmi_ports"][0].value;
         featureList.push(feature);
     }
-
+ 
     if (sableData["total_usb_ports"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("total_usb_ports");
         feature.value = sableData["total_usb_ports"][0].value;
         featureList.push(feature);
     }
-
+ 
     if (sableData["item_weight"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("item_weight");
         feature.value = parseInt(sableData["item_weight"][0].value, 16);
         featureList.push(feature);
     }
-
+ 
     if (sableData["item_dimensions"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("item_dimensions");
@@ -297,29 +297,29 @@ function ParseSableResult(sableData) {
             "x" + sableData["item_dimensions"][0].height.value;
         featureList.push(feature);
     }
-
+ 
     if (sableData["display"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("display");
         feature.value = parseInt(sableData["display"][0].size[0].value, 16);
         featureList.push(feature);
     }
-
+ 
     if (sableData["wattage"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("wattage");
         feature.value = parseInt(sableData["wattage"][0].value, 16);
         featureList.push(feature);
     }
-
+ 
     if (sableData["native_resolution"] != null) {
         var feature = {};
         feature.name = FeatureNameToURL("native_resolution");
         feature.value = sableData["native_resolution"][0].value;
         featureList.push(feature);
     }
-
-
+ 
+ 
     return featureList;
 }
 
@@ -330,22 +330,23 @@ function change_layout() {
 
 function main () {
     change_layout();
+ 
     AppendIconizeStyle();
-
-
+ 
+ 
     //features = [{"name": "weight", "value": "136g"}, {"name": "size", "value": "1.5 * 8.2 * 11cm"}, {"name": "drive_hdd", "value": "100T"}, {"name": "brand", "value": "western_digital"}];
-
-
-    var feature1 = ParseFeatureBullets();
-    var feature2 = ParseProductDetail();
+ 
+ 
+    //var feature1 = ParseFeatureBullets();
+    //var feature2 = ParseProductDetail();
     //var jsonBlock = feature1.concat(feature2)
-
-    //var jsonBlock = ParseSableResult(SableResult);
-
-    CreateIconContainer(feature1.concat(feature2));
+ 
+    var jsonBlock = ParseSableResult(SableResult);
+ 
+    CreateIconContainer(jsonBlock);
     //console.log(jsonBlock);
-
+ 
     //AppendIcon(jsonBlock);
 }
-
+ 
 main();
