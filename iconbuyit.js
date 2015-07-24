@@ -326,7 +326,7 @@ function ParseSableResult(sableData) {
 function change_layout() {
     var prodDetails = document.getElementById('prodDetails');
     prodDetails.parentNode.removeChild(prodDetails);
-});
+}
 
 function main () {
     change_layout();
