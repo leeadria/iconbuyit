@@ -24,6 +24,6 @@
                 regex: ".*USB.*"
             }
         ],
-        icon: "USB"
+        icon: "tv_usb_icon"
     }
 ]
